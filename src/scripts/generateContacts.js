@@ -15,6 +15,6 @@ export const generateContacts = async (number) => {
   });
   return contacts;
 };
-generateContacts()
+generateContacts(5)
   .then(() => fs.readFile(PATH_DB, { encoding: 'utf-8' }))
   .catch((err) => console.error(err));

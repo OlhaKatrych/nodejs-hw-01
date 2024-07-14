@@ -8,14 +8,12 @@ export const addOneContact = async () => {
   console.log(oneContact);
   dataBase.push(oneContact);
   console.log(dataBase);
-  await fs.writeFile(
-    PATH_DB,
-    JSON.stringify([...dataBase], null, 2),
-    {
-      encoding: 'utf-8',
-    },
-  );
+  await fs.writeFile(PATH_DB, JSON.stringify([...dataBase], null, 2), {
+    encoding: 'utf-8',
+  });
   return dataBase;
 };
 
-addOneContact();
+addOneContact()
+  .then((data) => fs.readFile(PATH_DB, { encoding: 'utf-8' }))
+  .catch((err) => console.error(err));
