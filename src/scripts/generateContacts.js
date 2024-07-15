@@ -1,20 +1,21 @@
 import * as fs from 'node:fs/promises';
 import { PATH_DB } from '../constants/contacts.js';
 import { createFakeContact } from '../utils/createFakeContact.js';
-import dataBase from '../db/db.json' assert { type: 'json' };
 
 export const generateContacts = async (number) => {
   let contacts = [];
   for (let i = 0; i < number; i++) {
     contacts.push(createFakeContact());
   }
+  const dataBase = await fs.readFile(PATH_DB, { encoding: 'utf-8' });
+  const contactsParse = JSON.parse(dataBase);
 
-  dataBase.push(...contacts);
-  await fs.writeFile(PATH_DB, JSON.stringify(dataBase, null, 2), {
+  contactsParse.push(...contacts);
+  await fs.writeFile(PATH_DB, JSON.stringify(contactsParse, null, 2), {
     encoding: 'utf8',
   });
-  return contacts;
+  return contactsParse;
 };
 generateContacts(5)
-  .then(() => fs.readFile(PATH_DB, { encoding: 'utf-8' }))
+  .then(() => console.log('Generated contacts'))
   .catch((err) => console.error(err));

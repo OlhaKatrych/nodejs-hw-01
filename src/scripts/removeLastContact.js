@@ -1,12 +1,14 @@
 import * as fs from 'node:fs/promises';
 import { PATH_DB } from '../constants/contacts.js';
-import dataBase from '../db/db.json' assert { type: 'json' };
+
 
 export const removeLastContact = async () => {
-  if (dataBase.length > 0) {
-    dataBase.pop();
+  const dataBase = await fs.readFile(PATH_DB, { encoding: 'utf-8' });
+  const contacts = JSON.parse(dataBase);
+  if (contacts.length > 0) {
+    contacts.pop();
   }
-  await fs.writeFile(PATH_DB, JSON.stringify(dataBase, null, 2), {
+  await fs.writeFile(PATH_DB, JSON.stringify(contacts, null, 2), {
     encoding: 'utf-8',
   });
 };
